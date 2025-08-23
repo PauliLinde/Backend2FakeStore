@@ -1,6 +1,9 @@
 package com.example.backend2fakestore.controllers;
 
-import lombok.RequiredArgsConstructor;
+import com.example.backend2fakestore.repository.ProductRepository;
+import com.example.backend2fakestore.services.FakeStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,10 @@ import java.net.URL;
 
 @Controller
 public class FakeStoreController {
+
+    @Autowired
+    ProductRepository pRepository;
+    FakeStoreService fStoreService;
 
     @GetMapping("/")
     public String index(Model model){
@@ -40,4 +47,15 @@ public class FakeStoreController {
         in.close();
         return jsonResponse.toString();
     }
+    public FakeStoreController(ProductRepository pRepository, FakeStoreService fStoreService){
+        this.pRepository = pRepository;
+        this.fStoreService = fStoreService;
+    }
+    @GetMapping("/fetch")
+    public ResponseEntity<?> fetchProducts() throws IOException {
+        fStoreService.getItemsAndSave();
+        return ResponseEntity.ok().body(pRepository.findAll());
+    }
+
+
 }
