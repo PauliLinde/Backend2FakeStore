@@ -1,11 +1,9 @@
 package com.example.backend2fakestore.services;
-import com.example.backend2fakestore.models.Root;
+import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import java.util.*;
 
 
 import java.io.BufferedReader;
@@ -39,9 +37,9 @@ public class FakeStoreService {
 					SBuilder.append(line);
 				}
 
-				Root[] fakeProducts = mapper.readValue(SBuilder.toString(), Root[].class);
+				Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
 
-				for (Root root : fakeProducts) {
+				for (Product root : fakeProducts) {
 					pRepository.save(root);
 					System.out.println("Saved product: " + root.getTitle());
 				}

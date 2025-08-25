@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Root {
+public class Product {
 
 	@Id
 	public int id;
