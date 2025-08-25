@@ -21,26 +21,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class) //JUnit använder Mockito
 class FakeStoreServiceTest {
 
 	@Mock
-	private ProductRepository pRepository;
+	private ProductRepository pRepository; //skapar upp en lokal pRepository, falsk version
 
 	@InjectMocks
-	private FakeStoreService fStoreService;
+	private FakeStoreService fStoreService; //skapar en lokal fStoreService och injicerar pRepository automatiskt
 
-	@Test
+	@Test //testet anropar API:et
 	void testGetItemsAndSave() throws IOException {
+//kopplar till Root, gör en mockprodukt.
+		Root mProduct = new Root();
+		mProduct.id = 1;
+		mProduct.title = "Test Product";
+//när någon anropar save() med vilken Root som helst, returnera mockProduct
+		when(pRepository.save(any(Root.class))).thenReturn(mProduct);
 
-		Root mockProduct = new Root();
-		mockProduct.id = 1;
-		mockProduct.title = "Test Product";
-
-		when(pRepository.save(any(Root.class))).thenReturn(mockProduct);
-
+//utför koden som ska testas
 		fStoreService.getItemsAndSave();
-
+//testar att save() anropades
 		verify(pRepository, atLeastOnce()).save(any(Root.class));
 	}
 }
