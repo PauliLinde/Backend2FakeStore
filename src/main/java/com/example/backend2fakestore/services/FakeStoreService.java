@@ -23,28 +23,32 @@ public class FakeStoreService {
 		this.pRepository = pRepository;
 	}
 
-			public void getItemsAndSave() throws IOException {
-			ObjectMapper mapper = new ObjectMapper();
-			URL url = new URL("https://fakestoreapi.com/products");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.connect();
+	public void getItemsAndSave() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		URL url = new URL("https://fakestoreapi.com/products");
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
+		connection.connect();
 
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-				StringBuilder SBuilder = new StringBuilder();
-				String line;
-				while ((line = in.readLine()) != null) {
-					SBuilder.append(line);
-				}
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+			StringBuilder SBuilder = new StringBuilder();
+			String line;
 
-				Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
+			while ((line = in.readLine()) != null) {
+				SBuilder.append(line);
+			}
 
-				for (Product root : fakeProducts) {
-					pRepository.save(root);
-					System.out.println("Saved product: " + root.getTitle());
-				}
+			System.out.println("JSON Response: " + SBuilder.toString());
+
+			Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
+			System.out.println("Parsed " + fakeProducts.length + " products");
+
+			for (Product root : fakeProducts) {
+				pRepository.save(root);
+				System.out.println("Saved product: " + root.getTitle());
 			}
 		}
 	}
+}
 
 

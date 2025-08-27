@@ -14,7 +14,7 @@
         <tbody>
         <tr th:each="product : ${allProducts}">
             <!-- Här ska produkterna presenteras-->
-            <!--<td th:text="${}+' '+${}"></td>-->
+            <td th:text="${product.title}+' '+${product.price}"></td>
 
         </tr>
         </tbody>
