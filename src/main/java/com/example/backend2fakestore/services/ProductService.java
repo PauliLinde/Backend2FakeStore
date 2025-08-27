@@ -8,12 +8,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class ProductService {
 
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+
+
+    public ProductService(ProductMapper productMapper, ProductRepository productRepository) {
+        this.productMapper = productMapper;
+        this.productRepository = productRepository;
+    }
 
     public List<ProductDto> getAllProducts(){
         return productMapper.toDtoList(productRepository.findAll().stream().toList());
