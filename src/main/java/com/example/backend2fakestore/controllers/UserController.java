@@ -18,7 +18,7 @@ public class UserController {
     @GetMapping("/register")
     public String registerForm(Model model){
         model.addAttribute("user", new AppUser());
-        return "register";
+        return "register.html";
     }
 
     @PostMapping("/register")
@@ -31,8 +31,10 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return "login.html";
     }
+
+    //Behöver en handleLogin sem redirectar till products?
 
     @GetMapping("/admin")
     public String admin(){

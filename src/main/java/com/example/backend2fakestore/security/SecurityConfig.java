@@ -41,7 +41,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin").hasRole("ADMIN")//order istället för admin?
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login.loginPage("/login").permitAll())
