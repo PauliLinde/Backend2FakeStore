@@ -18,7 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")//order istället för admin?
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login.loginPage("/login").permitAll())
+                .formLogin(AbstractHttpConfigurer::disable)
                 .logout(LogoutConfigurer::permitAll)
                 .headers(AbstractHttpConfigurer::disable);
 

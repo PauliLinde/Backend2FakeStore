@@ -11,17 +11,19 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*\\d).{2,}$");
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    private final int saltStrength = 10;
-    private final BCryptPasswordEncoder.BCryptVersion bCryptVersion = BCryptPasswordEncoder.BCryptVersion.$2B;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(bCryptVersion, saltStrength);
-
-    UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        int saltStrength = 10;
+        BCryptPasswordEncoder.BCryptVersion bCryptVersion = BCryptPasswordEncoder.BCryptVersion.$2B;
+        this.encoder = new BCryptPasswordEncoder(bCryptVersion, saltStrength);
+    }
 
     public String registerUser(String username, String password) {
         if (findByUsername(username).isPresent()) {
-            return "Username already exists";
+            return "Username already exists" + username + password;
         }
         if (!isValidPassword(password)) {
             return "Password need to be at least 5 characters and contain a digit.";
@@ -33,15 +35,18 @@ public class UserService {
 
     public String loginUser(String username, String password){
         Optional<String> registeredPassword = findByUsername(username);
+        System.out.println(registeredPassword + " - " + username + " - " + password);
         if (registeredPassword.isEmpty()) {
             return "Login failed";
         }
-        if (!registeredPassword.equals(hashPassword(password))){
+        if (!encoder.matches(password, registeredPassword.get())){
             return "Login failed";
         }
+        System.out.println("return null");
         return null;
     }
 
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*\\d).{2,}$");
     private boolean isValidPassword(String password) {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
