@@ -46,10 +46,8 @@ public class SecurityConfig {
                 )
                 .formLogin(login -> login.loginPage("/login").permitAll())
                 .logout(LogoutConfigurer::permitAll)
-                // .csrf(AbstractHttpConfigurer::disable)
                 .headers(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
-
 }

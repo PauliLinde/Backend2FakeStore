@@ -1,40 +1,50 @@
 package com.example.backend2fakestore.controllers;
 
-import com.example.backend2fakestore.models.AppUser;
-import com.example.backend2fakestore.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.backend2fakestore.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-
-    @GetMapping("/register")
-    public String registerForm(Model model){
-        model.addAttribute("user", new AppUser());
-        return "register.html";
-    }
+    UserService userService;
 
     @PostMapping("/register")
-    public String register(@ModelAttribute AppUser user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(user.getRole());
-        userRepository.save(user);
+    public String register(@RequestParam String username,
+                           @RequestParam String password,
+                           Model model){
+        String error = userService.registerUser(username, password);
+        if (error != null){
+            model.addAttribute("error", error);
+            return "register";
+        }
         return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "login.html";
+    @PostMapping("/login")
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        Model model){
+        String error = userService.loginUser(username, password);
+        if (error != null){
+            model.addAttribute("error", error);
+            return "login";
+        }
+        return "redirect:/home";
     }
 
-    //Behöver en handleLogin sem redirectar till products?
+    @GetMapping("/register")
+    public String registerForm(){
+        return "register";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(){
+        return "login";
+    }
 
     @GetMapping("/admin")
     public String admin(){
