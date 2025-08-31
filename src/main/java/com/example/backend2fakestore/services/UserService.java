@@ -34,12 +34,13 @@ public class UserService {
     }
 
     public String loginUser(String username, String password){
-        Optional<String> registeredPassword = findByUsername(username);
-        System.out.println(registeredPassword + " - " + username + " - " + password);
-        if (registeredPassword.isEmpty()) {
+        Optional<AppUser> userOpt = userRepository.findByUsername(username);
+
+        if (userOpt.isEmpty()) {
             return "Login failed";
         }
-        if (!encoder.matches(password, registeredPassword.get())){
+        AppUser user = userOpt.get();
+        if (!encoder.matches(password, user.getPassword())) {
             return "Login failed";
         }
         System.out.println("return null");
@@ -62,8 +63,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<String> findByUsername(String username) {
-        return userRepository.findByUsername(username).map(AppUser::getPassword);
+    public Optional<AppUser> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }

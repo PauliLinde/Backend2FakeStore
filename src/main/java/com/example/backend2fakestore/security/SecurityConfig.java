@@ -45,13 +45,18 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")//order istället för admin?
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/shop/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(LogoutConfigurer::permitAll)
-                .headers(AbstractHttpConfigurer::disable);
-
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll())
+                .logout(LogoutConfigurer::permitAll);
         return http.build();
     }
+
 }
+

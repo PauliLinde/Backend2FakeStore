@@ -1,6 +1,8 @@
 package com.example.backend2fakestore.controllers;
 
+import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,18 +31,24 @@ public class UserController {
         return "redirect:/login";
     }
 
+
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
-                        Model model){
+                        HttpSession session,
+                        Model model) {
         String error = userService.loginUser(username, password);
         if (error != null){
             model.addAttribute("error", error);
             return "login";
         }
-        return "redirect:/home";
-    }
 
+    AppUser user = userService.findByUsername(username).orElseThrow();
+    session.setAttribute("username", username);
+    session.setAttribute("role", user.getRole());
+        return "redirect:/home";
+
+    }
     @GetMapping("/register")
     public String registerForm(){
         return "register";
