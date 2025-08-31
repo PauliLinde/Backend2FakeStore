@@ -16,7 +16,7 @@ class Backend2FakeStoreApplicationTests {
     void contextLoads() {
     }
 
-    @Test //obs denna funkar ej pga ej konfigurerat tester
+    @Test
     void testJSONMapper() throws Exception { //testar mappern med en lokal JSON-sträng
         String JSON = "[{\"id\":1,\"title\":\"Test Product\",\"price\":10.99,\"description\":\"Test desc\",\"category\":\"electronics\",\"image\":\"url\",\"rating\":{\"rate\":4.5,\"count\":120}}]";
    ObjectMapper mapper = new ObjectMapper();
