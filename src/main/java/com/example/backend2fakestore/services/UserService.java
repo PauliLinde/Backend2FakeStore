@@ -3,6 +3,7 @@ package com.example.backend2fakestore.services;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,13 +13,11 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder; // now using Spring bean
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
-        int saltStrength = 10;
-        BCryptPasswordEncoder.BCryptVersion bCryptVersion = BCryptPasswordEncoder.BCryptVersion.$2B;
-        this.encoder = new BCryptPasswordEncoder(bCryptVersion, saltStrength);
+        this.encoder = encoder;
     }
 
     public String registerUser(String username, String password) {
@@ -28,19 +27,8 @@ public class UserService {
         if (!isValidPassword(password)) {
             return "Password need to be at least 5 characters and contain a digit.";
         }
-        String hashedPassword = hashPassword(password);
-        saveUser(username, hashedPassword);
-        return null;
-    }
-
-    public String loginUser(String username, String password){
-        Optional<String> registeredPassword = findByUsername(username);
-        if (registeredPassword.isEmpty()) {
-            return "Login failed";
-        }
-        if (!encoder.matches(password, registeredPassword.get())){
-            return "Login failed";
-        }
+        String hashedPassword = encoder.encode(password);
+        saveUser(username, hashedPassword, "ADMIN"); // # TODO få in värdet via form istället
         return null;
     }
 
@@ -49,14 +37,11 @@ public class UserService {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
 
-    private String hashPassword(String password) {
-        return encoder.encode(password);
-    }
-
-    private void saveUser(String username, String hashedPassword) {
+    private void saveUser(String username, String hashedPassword, String role) {
         AppUser user = new AppUser();
         user.setUsername(username);
         user.setPassword(hashedPassword);
+        user.setRole(role);
         userRepository.save(user);
     }
 

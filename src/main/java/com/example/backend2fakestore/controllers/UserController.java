@@ -29,18 +29,6 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        Model model){
-        String error = userService.loginUser(username, password);
-        if (error != null){
-            model.addAttribute("error", error);
-            return "login";
-        }
-        return "redirect:/home";
-    }
-
     @GetMapping("/register")
     public String registerForm(){
         return "register";
