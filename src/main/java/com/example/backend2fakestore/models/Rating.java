@@ -1,25 +1,16 @@
 package com.example.backend2fakestore.models;
 
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rating {
 	public double rate;
 	public int count;
 
-	public double getRate() {
-		return rate;
-	}
-
-	public void setRate(double rate) {
-		this.rate = rate;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
 }

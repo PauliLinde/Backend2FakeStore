@@ -13,7 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
-//@RequiredArgsConstructor (Jesper fick ta bort denna då det finns en manuell konstruktor)
 @Component
 public class FakeStoreService {
 
