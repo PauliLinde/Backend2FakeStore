@@ -23,7 +23,7 @@ public class UserService {
 
     public String registerUser(String username, String password) {
         if (findByUsername(username).isPresent()) {
-            return "Username already exists" + username + password;
+            return "Username already exists";
         }
         if (!isValidPassword(password)) {
             return "Password need to be at least 5 characters and contain a digit.";
@@ -35,18 +35,16 @@ public class UserService {
 
     public String loginUser(String username, String password){
         Optional<String> registeredPassword = findByUsername(username);
-        System.out.println(registeredPassword + " - " + username + " - " + password);
         if (registeredPassword.isEmpty()) {
             return "Login failed";
         }
         if (!encoder.matches(password, registeredPassword.get())){
             return "Login failed";
         }
-        System.out.println("return null");
         return null;
     }
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*\\d).{2,}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*\\d).{5,}$");
     private boolean isValidPassword(String password) {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
