@@ -10,6 +10,7 @@ import java.util.Date;
 public class Order {
 
      @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
      public int id;
      public LocalDateTime date;
      public int total;
