@@ -26,6 +26,7 @@ public class Product {
 	public String image;
 
 	@Embedded
+
 	public Rating rating;
 
 }
