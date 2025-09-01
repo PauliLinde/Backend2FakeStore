@@ -2,7 +2,6 @@ package com.example.backend2fakestore.services;
 
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +12,14 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder; // now using Spring bean
+    private final PasswordEncoder encoder;
 
     public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.encoder = encoder;
     }
 
-    public String registerUser(String username, String password) {
+    public String registerUser(String username, String password, String role) {
         if (findByUsername(username).isPresent()) {
             return "Username already exists";
         }
@@ -28,7 +27,7 @@ public class UserService {
             return "Password need to be at least 5 characters and contain a digit.";
         }
         String hashedPassword = encoder.encode(password);
-        saveUser(username, hashedPassword, "ADMIN"); // # TODO få in värdet via form istället
+        saveUser(username, hashedPassword, "ROLE_" + role);
         return null;
     }
 

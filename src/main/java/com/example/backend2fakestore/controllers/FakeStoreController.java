@@ -11,16 +11,17 @@ import java.io.IOException;
 @Controller
 public class FakeStoreController {
 
-    ProductRepository pRepository;
-    FakeStoreService fStoreService;
+    ProductRepository productRepository;
+    FakeStoreService fakeStoreService;
 
     public FakeStoreController(ProductRepository pRepository, FakeStoreService fStoreService){
-        this.pRepository = pRepository;
-        this.fStoreService = fStoreService;
+        this.productRepository = pRepository;
+        this.fakeStoreService = fStoreService;
     }
+
     @GetMapping("/fetch")
     public ResponseEntity<?> fetchProducts() throws IOException {
-        fStoreService.getItemsAndSave();
-        return ResponseEntity.ok().body(pRepository.findAll());
+        fakeStoreService.getItemsAndSave();
+        return ResponseEntity.ok().body(productRepository.findAll());
     }
 }

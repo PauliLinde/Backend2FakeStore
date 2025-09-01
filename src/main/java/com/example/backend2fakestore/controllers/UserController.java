@@ -20,8 +20,9 @@ public class UserController {
     @PostMapping("/register")
     public String register(@RequestParam String username,
                            @RequestParam String password,
+                           @RequestParam String role,
                            Model model){
-        String error = userService.registerUser(username, password);
+        String error = userService.registerUser(username, password, role);
         if (error != null){
             model.addAttribute("error", error);
             return "register";
@@ -44,7 +45,7 @@ public class UserController {
         return "admin";
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(){
         return "home";
     }

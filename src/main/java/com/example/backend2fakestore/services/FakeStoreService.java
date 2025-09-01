@@ -37,7 +37,7 @@ public class FakeStoreService {
 				SBuilder.append(line);
 			}
 
-			System.out.println("JSON Response: " + SBuilder.toString());
+			System.out.println("JSON Response: " + SBuilder);
 
 			Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
 			System.out.println("Parsed " + fakeProducts.length + " products");

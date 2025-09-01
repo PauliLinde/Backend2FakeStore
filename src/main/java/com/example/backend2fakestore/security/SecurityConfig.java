@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .map(user -> User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRole())
+                        .roles(user.getRole().replace("ROLE_", ""))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
@@ -51,10 +51,16 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error=true")
-                        .permitAll())
-                .logout(LogoutConfigurer::permitAll);
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .permitAll()
+                );
         return http.build();
     }
 }

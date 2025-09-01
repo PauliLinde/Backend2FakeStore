@@ -24,7 +24,7 @@ public class ProductController {
         model.addAttribute("allProducts", products);
         model.addAttribute("title", "Products");
         model.addAttribute("name", "Product details");
-        return "products.html";
+        return "products";
     }
 
 }
