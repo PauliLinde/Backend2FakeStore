@@ -3,7 +3,6 @@ package com.example.backend2fakestore.services;
 import com.example.backend2fakestore.dtos.ProductDto;
 import com.example.backend2fakestore.mappers.ProductMapper;
 import com.example.backend2fakestore.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

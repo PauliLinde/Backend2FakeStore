@@ -1,5 +1,6 @@
 package com.example.backend2fakestore.controllers;
 
+import com.example.backend2fakestore.dtos.RegisterDto;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute AppUser appUser,
+    public String register(@ModelAttribute RegisterDto user,
                            Model model){
-        String error = userService.registerUser2(appUser);
+        String error = userService.registerUser(user);
         if (error != null){
             model.addAttribute("error", error);
             return "register";
@@ -29,7 +30,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String registerForm(Model model){
-        model.addAttribute("appUser", new AppUser());
+        model.addAttribute("registerDto", new RegisterDto());
         return "register";
     }
 

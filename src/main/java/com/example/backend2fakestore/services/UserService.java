@@ -1,5 +1,7 @@
 package com.example.backend2fakestore.services;
 
+import com.example.backend2fakestore.dtos.RegisterDto;
+import com.example.backend2fakestore.mappers.UserMapper;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,21 +15,24 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder,  UserMapper userMapper) {
         this.userRepository = userRepository;
         this.encoder = encoder;
+        this.userMapper = userMapper;
     }
 
-    public String registerUser(String username, String password, String role) {
-        if (findByUsername(username).isPresent()) {
+    public String registerUser(RegisterDto registerDto) {
+        if (findByUsername(registerDto.getUsername()).isPresent()) {
             return "Username already exists";
         }
-        if (!isValidPassword(password)) {
+        if (!isValidPassword(registerDto.getPassword())) {
             return "Password need to be at least 5 characters and contain a digit.";
         }
-        String hashedPassword = encoder.encode(password);
-        saveUser(username, hashedPassword, "ROLE_" + role);
+        AppUser user = userMapper.registerDtoToAppUser(registerDto);
+        String hashedPassword = encoder.encode(user.getPassword());
+        saveUser(user.getUsername(), hashedPassword, "ROLE_" + user.getRole());
         return null;
     }
 
@@ -46,17 +51,5 @@ public class UserService {
 
     public Optional<String> findByUsername(String username) {
         return userRepository.findByUsername(username).map(AppUser::getPassword);
-    }
-
-    public String registerUser2(AppUser user) {
-        if (findByUsername(user.getUsername()).isPresent()) {
-            return "Username already exists";
-        }
-        if (!isValidPassword(user.getPassword())) {
-            return "Password need to be at least 5 characters and contain a digit.";
-        }
-        String hashedPassword = encoder.encode(user.getPassword());
-        saveUser(user.getUsername(), hashedPassword, "ROLE_" + user.getRole());
-        return null;
     }
 }
