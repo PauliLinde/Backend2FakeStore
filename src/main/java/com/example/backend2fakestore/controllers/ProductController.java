@@ -21,6 +21,11 @@ public class ProductController {
     public String getAllProducts(Model model){
         List<ProductDto> products = productService.getAllProducts();
 
+        System.out.println("Number of products found: " + products.size());
+        if (!products.isEmpty()) {
+            System.out.println("First product: " + products.get(0).getTitle());
+        }
+
         model.addAttribute("allProducts", products);
         model.addAttribute("title", "Products");
         model.addAttribute("name", "Product details");

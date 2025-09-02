@@ -8,17 +8,24 @@
 
 <h2 th:text="${title}"></h2>
 
-<div class="allProducts" th:unless="${#lists.isEmpty(allProducts)}">
+<div class="allProducts" th:if="${allProducts != null and !#lists.isEmpty(allProducts)}">
     <table>
-        <th th:text="${name}"></th>
+        <thead>
+        <tr>
+            <th th:text="${name}">Product Details</th>
+        </tr>
+        </thead>
         <tbody>
         <tr th:each="product : ${allProducts}">
-            <!-- Här ska produkterna presenteras-->
-            <td th:text="${product.title}+' '+${product.price}"></td>
-
+            <!-- Här ska produkterna visas-->
+            <td th:text="${product.title + ' $' + product.price}">Product info</td>
         </tr>
         </tbody>
     </table>
+</div>
+
+<div th:if="${allProducts == null or #lists.isEmpty(allProducts)}">
+    <p>No products found</p>
 </div>
 
 </body>
