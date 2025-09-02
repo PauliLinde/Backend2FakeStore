@@ -1,10 +1,9 @@
 package com.example.backend2fakestore.services;
 
 import com.example.backend2fakestore.models.AppUser;
-import com.example.backend2fakestore.models.Order;
 import com.example.backend2fakestore.models.Product;
+import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.OrderRepository;
-import com.example.backend2fakestore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,9 +19,9 @@ public class OrderService {
 
     }
 
-    public Order createOrder(AppUser user, Product product, int quantity) {
+    public ProductOrder createOrder(AppUser user, Product product, int quantity) {
 
-        Order order = new Order();
+        ProductOrder order = new ProductOrder();
         order.setAppUser(user);
         order.setProduct(product);
         order.setDate(LocalDateTime.now());
@@ -32,7 +31,7 @@ public class OrderService {
         order.setTotal(total);
 
 
-        Order savedOrder = orderRepository.save(order);
+        ProductOrder savedOrder = orderRepository.save(order);
         return savedOrder;
     }
 }
