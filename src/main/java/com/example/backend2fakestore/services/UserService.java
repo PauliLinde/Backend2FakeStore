@@ -48,4 +48,15 @@ public class UserService {
         return userRepository.findByUsername(username).map(AppUser::getPassword);
     }
 
+    public String registerUser2(AppUser user) {
+        if (findByUsername(user.getUsername()).isPresent()) {
+            return "Username already exists";
+        }
+        if (!isValidPassword(user.getPassword())) {
+            return "Password need to be at least 5 characters and contain a digit.";
+        }
+        String hashedPassword = encoder.encode(user.getPassword());
+        saveUser(user.getUsername(), hashedPassword, "ROLE_" + user.getRole());
+        return null;
+    }
 }

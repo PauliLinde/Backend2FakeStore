@@ -1,11 +1,10 @@
 package com.example.backend2fakestore.controllers;
 
+import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -18,11 +17,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password,
-                           @RequestParam String role,
+    public String register(@ModelAttribute AppUser appUser,
                            Model model){
-        String error = userService.registerUser(username, password, role);
+        String error = userService.registerUser2(appUser);
         if (error != null){
             model.addAttribute("error", error);
             return "register";
@@ -31,7 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerForm(){
+    public String registerForm(Model model){
+        model.addAttribute("appUser", new AppUser());
         return "register";
     }
 
