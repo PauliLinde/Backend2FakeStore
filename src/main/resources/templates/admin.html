@@ -12,11 +12,17 @@
     <p>Inga orders hittades</p>
 </div>
 
+
 <ul class="allOrders" th:unless="${#lists.isEmpty(allOrders)}">
   <li th:each="order : ${allOrders}">
     <a th:text="${order.date}"></a>
     <a th:text="${order.product.title}"></a>
     <a th:text="${order.appUser.username}"></a>
+
+      <a th:href="@{/admin/delete/{id}(id=${order.id})}"
+         onclick="return confirm('Ta bort order?')">
+          Ta bort
+      </a>
   </li>
 </ul>
 
