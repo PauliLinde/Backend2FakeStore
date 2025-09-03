@@ -21,11 +21,11 @@ public class OrderService {
     public OrderService(OrderRepository orderRepository, ProductRepository productRepository,
                         UserRepository userRepository) {
         this.orderRepository = orderRepository;
-        this.productRepository=productRepository;
-        this.userRepository=userRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
-    public List<ProductOrder> getAllOrders(){
+    public List<ProductOrder> getAllOrders() {
         //return orderRepository.findAll();
         List<ProductOrder> orders = orderRepository.findAll();
         System.out.println("Antal orders: " + orders.size());
@@ -35,12 +35,14 @@ public class OrderService {
         return orders;
     }
 
-    public ProductOrder createOrder(AppUser user, Product product) {
+    public ProductOrder createOrder(AppUser user, Product product, int quantity) {
 
         ProductOrder order = new ProductOrder();
         order.setAppUser(user);
         order.setProduct(product);
+        order.setQuantity(quantity);
         order.setDate(LocalDateTime.now());
+        order.setTotal(quantity);
 
 
         int total = (int) product.getPrice();
@@ -53,24 +55,29 @@ public class OrderService {
 
     public void createOrder2(int userId, int productId) {
 
-        AppUser user = userRepository.findById(userId).get();
-        if(user == null) {
-            System.out.println("User not found");
+        try {
+            AppUser user = userRepository.findById(userId).get();
+            if (user == null) {
+                System.out.println("User not found");
+            }
+            Product product = productRepository.findById(productId).get();
+            if (product == null) {
+                System.out.println("Product not found");
+            }
+
+            ProductOrder order = new ProductOrder();
+            order.setAppUser(user);
+            order.setProduct(product);
+            order.setQuantity(1);
+            order.setDate(LocalDateTime.now());
+
+            int total = (int) product.getPrice();
+            order.setTotal(total);
+
+            orderRepository.save(order);
+        } catch (Exception e) {
+            System.out.println("Error creating order " + e.getMessage());
         }
-        Product product = productRepository.findById(productId).get();
-        if(product == null) {
-            System.out.println("Product not found");
-        }
-
-        ProductOrder order = new ProductOrder();
-        order.setAppUser(user);
-        order.setProduct(product);
-        order.setDate(LocalDateTime.now());
-
-        int total = (int) product.getPrice();
-        order.setTotal(total);
-
-        orderRepository.save(order);
     }
 }
 

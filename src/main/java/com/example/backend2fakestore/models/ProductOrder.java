@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
@@ -19,6 +18,7 @@ public class ProductOrder {
      public int id;
      public LocalDateTime date;
      public int total;
+     public int quantity;
 
     @OneToOne
     @JoinColumn(name = "product_id")
