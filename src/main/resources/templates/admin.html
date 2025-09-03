@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+
+<h2 th:text="${title}">Default Title</h2>
+
+<div th:if="${#lists.isEmpty(allOrders)}">
+    <p>Inga orders hittades</p>
+</div>
+
+<ul class="allOrders" th:unless="${#lists.isEmpty(allOrders)}">
+  <li th:each="order : ${allOrders}">
+    <a th:text="${order.date}"></a>
+    <a th:text="${order.product.title}"></a>
+    <a th:text="${order.appUser.username}"></a>
+  </li>
+</ul>
+
+</body>
+</html>
