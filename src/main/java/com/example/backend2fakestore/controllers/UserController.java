@@ -39,10 +39,10 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/admin")
+    /*@GetMapping("/admin")
     public String admin(){
         return "admin";
-    }
+    }*/
 
     @GetMapping("/")
     public String home(){
