@@ -20,7 +20,7 @@ public class ProductOrder {
      public int total;
      public int quantity;
 
-    @OneToOne
+    @ManyToOne /*The @OneToOne annotation creates a unique constraint, meaning each product can only appear in one order ever. This is why you get "Duplicate entry '1'" - you're trying to create a second order for product with ID 1.*/
     @JoinColumn(name = "product_id")
     public Product product;
 

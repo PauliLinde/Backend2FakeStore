@@ -4,6 +4,7 @@ import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.ProductRepository;
+import com.example.backend2fakestore.repository.UserRepository;
 import com.example.backend2fakestore.services.OrderService;
 import com.example.backend2fakestore.services.ProductService;
 import org.springframework.security.core.Authentication;
@@ -20,10 +21,12 @@ public class OrderController {
 
     private final OrderService orderService;
    private final  ProductRepository productRepository;
+   private final UserRepository userRepository;
 
-   public OrderController(OrderService orderService, ProductRepository productRepository) {
+   public OrderController(OrderService orderService, ProductRepository productRepository, UserRepository userRepository) {
         this.orderService = orderService;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
         }
 
 
@@ -65,7 +68,7 @@ public class OrderController {
             }
             String username = authentication.getName(); //Logged-in username från Spring Security
             orderService.createOrder(username, productOpt.get(), quantity);
-            return "redirect:/order-successful";
+            return "order-successful";
 
         } catch (Exception e) {
             return "redirect:/product/getAll?error=Failed to create order";
@@ -76,7 +79,9 @@ public class OrderController {
         public String orderSuccessful (Model model){
             model.addAttribute("title", "Order Successful");
             return "order-successful";
-        }
+
+
+    }
 
 
 
