@@ -72,6 +72,16 @@ public class OrderService {
 
         orderRepository.save(order);
     }
+
+    //Ta bort order
+    public void deleteOrder(int orderId) {
+        if (!orderRepository.existsById(orderId)) {
+            throw new RuntimeException("Order ID not found");
+        }
+
+        orderRepository.deleteById(orderId);
+        System.out.println("Order" + orderId + "deleted");
+    }
 }
 
 
