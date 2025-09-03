@@ -2,18 +2,16 @@ package com.example.backend2fakestore.controllers;
 
 import com.example.backend2fakestore.dtos.RegisterUserDTO;
 import com.example.backend2fakestore.services.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/register")
     public String register(@ModelAttribute RegisterUserDTO newUser,
