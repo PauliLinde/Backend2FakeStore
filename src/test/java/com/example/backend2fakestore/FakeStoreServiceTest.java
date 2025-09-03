@@ -28,8 +28,8 @@ class FakeStoreServiceTest {
 	void testGetItemsAndSave() throws IOException {
 //kopplar till Root, gör en mockprodukt.
 		Product mProduct = new Product();
-		mProduct.id = 1;
-		mProduct.title = "Test Product";
+		mProduct.setId(1);
+		mProduct.setTitle("Test Product");
 //när någon anropar save() med vilken Root som helst, returnera mockProduct
 		when(pRepository.save(any(Product.class))).thenReturn(mProduct);
 

@@ -1,6 +1,6 @@
 package com.example.backend2fakestore.services;
 
-import com.example.backend2fakestore.dtos.ProductDto;
+import com.example.backend2fakestore.dtos.ProductDTO;
 import com.example.backend2fakestore.mappers.ProductMapper;
 import com.example.backend2fakestore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> getAllProducts(){
+    public List<ProductDTO> getAllProducts(){
         return productMapper.toDtoList(productRepository.findAll().stream().toList());
     }
 }

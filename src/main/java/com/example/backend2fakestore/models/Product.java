@@ -1,32 +1,37 @@
 package com.example.backend2fakestore.models;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
     @Id
-	public int id;
-	public String title;
-	public double price;
+    private int id;
+    private String title;
+    private double price;
 
-	@Column(columnDefinition = "TEXT")
-	public String description;
-	public String category;
-	public String image;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    private String category;
+    private String image;
 
-	@Embedded
+    @Embedded
+    private Rating rating;
 
-	public Rating rating;
+    @Embeddable
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class Rating {
+        private double rate;
+        private int count;
+    }
 
 }

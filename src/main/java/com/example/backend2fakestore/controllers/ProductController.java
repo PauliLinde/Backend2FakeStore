@@ -1,6 +1,6 @@
 package com.example.backend2fakestore.controllers;
 
-import com.example.backend2fakestore.dtos.ProductDto;
+import com.example.backend2fakestore.dtos.ProductDTO;
 import com.example.backend2fakestore.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class ProductController {
 
     @RequestMapping("/product/getAll")
     public String getAllProducts(Model model){
-        List<ProductDto> products = productService.getAllProducts();
+        List<ProductDTO> products = productService.getAllProducts();
 
         model.addAttribute("allProducts", products);
         model.addAttribute("title", "Products");

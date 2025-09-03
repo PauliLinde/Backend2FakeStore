@@ -1,6 +1,6 @@
 package com.example.backend2fakestore.mappers;
 
-import com.example.backend2fakestore.dtos.ProductDto;
+import com.example.backend2fakestore.dtos.ProductDTO;
 import com.example.backend2fakestore.models.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductMapper {
 
-    public ProductDto toDto(Product product) {
+    public ProductDTO toDto(Product product) {
         if (product == null) return null;
-        ProductDto productDto = new ProductDto();
+        ProductDTO productDto = new ProductDTO();
         productDto.setId(product.getId());
         productDto.setTitle(product.getTitle());
         productDto.setPrice(product.getPrice());
@@ -24,7 +24,7 @@ public class ProductMapper {
         return productDto;
     }
 
-    public Product toEntity(ProductDto productDto) {
+    public Product toEntity(ProductDTO productDto) {
         if (productDto == null) return null;
         Product product = new Product();
         product.setId(productDto.getId());
@@ -36,16 +36,16 @@ public class ProductMapper {
         return product;
     }
 
-    public List<ProductDto> toDtoList(List<Product> products){
+    public List<ProductDTO> toDtoList(List<Product> products){
         if (products == null) return null;
         return products.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<Product> toEntityList(List<ProductDto> productDtos){
-        if (productDtos == null) return null;
-        return productDtos.stream()
+    public List<Product> toEntityList(List<ProductDTO> productDTOS){
+        if (productDTOS == null) return null;
+        return productDTOS.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
     }
