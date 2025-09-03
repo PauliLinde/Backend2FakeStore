@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+
+<h2 th:text="${title}"></h2>
+
+<ul class="allOrders" th:unless="${#lists.isEmpty(allOrders)}">
+  <li th:each="order : ${allOrders}">
+    <a th:text="${order.date}"></a>
+    <a th:text="${order.product.title}"></a>
+    <a th:text="${order.appuser.username}"></a>
+  </li>
+</ul>
+
+<!--
+<div class="allOrders" th:unless="${#lists.isEmpty(allOrders)}">
+  <table>
+    <th th:text="${name}"></th>
+    <tbody>
+    <tr th:each="order : ${allOrders}">
+      <-- Här ska ordrar presenteras->
+      <td th:text="${product.title}+' '+${product.price}"></td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+-->
+
+</body>
+</html>
