@@ -35,9 +35,11 @@ public class OrderService {
         return orders;
     }
 
-    public ProductOrder createOrder(AppUser user, Product product, int quantity) {
+    public ProductOrder createOrder(String username, Product product, int quantity) {
 
-        ProductOrder order = new ProductOrder();
+AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+ProductOrder order = new ProductOrder();
         order.setAppUser(user);
         order.setProduct(product);
         order.setQuantity(quantity);
@@ -45,7 +47,7 @@ public class OrderService {
         order.setTotal(quantity);
 
 
-        int total = (int) product.getPrice();
+        int total = (int) product.getPrice() * quantity;
         order.setTotal(total);
 
 
