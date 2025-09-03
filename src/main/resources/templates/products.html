@@ -8,18 +8,52 @@
 
 <h2 th:text="${title}"></h2>
 
-<div class="allProducts" th:unless="${#lists.isEmpty(allProducts)}">
-    <table>
-        <th th:text="${name}"></th>
+<div class="allProducts" th:if="${allProducts != null and !#lists.isEmpty(allProducts)}">
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Buy</th>
+        </tr>
+        </thead>
         <tbody>
         <tr th:each="product : ${allProducts}">
-            <!-- Här ska produkterna presenteras-->
-            <td th:text="${product.title}+' '+${product.price}"></td>
-
+            <td>
+                <img class="product-image" th:src="${product.image}" th:alt="${product.title}" style="width:100px;"/>
+            </td>
+            <td th:text="${product.title}">Title</td>
+            <td>$<span th:text="${product.price}">0</span></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.category}"></td>
+            <td>
+                <form th:action="@{/buy}" method="post">
+                    <input type="hidden" name="productID" th:value="${product.id}"/>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <label>
+                        Quantity:
+                        <input type="number" name="quantity" value="1" min="1" max="10" style="width: 60px;"/>
+                    </label>
+                    <br><br>
+                    <button type="submit" class="buy-btn">Buy Now</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 
+<p><a href="admin">View All Orders (Admin)</a></p>
+
+<div th:if="${allProducts == null or #lists.isEmpty(allProducts)}">
+    <p>No products found</p>
+</div>
+
+</body>
+</html>
 </body>
 </html>
