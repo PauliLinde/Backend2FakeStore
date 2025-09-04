@@ -32,5 +32,4 @@ public class Product {
         private double rate;
         private int count;
     }
-
 }

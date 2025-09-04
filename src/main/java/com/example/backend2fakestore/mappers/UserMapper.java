@@ -15,5 +15,4 @@ public class UserMapper {
         appUser.setRole(registerUserDTO.getRole());
         return appUser;
     }
-
 }
