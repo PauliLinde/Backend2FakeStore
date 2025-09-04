@@ -1,12 +1,15 @@
 package com.example.backend2fakestore.controllers;
 
+import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.services.OrderService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -45,6 +48,34 @@ public class OrderController {
     public String deleteOrderGet(@PathVariable int orderId) {
         orderService.deleteOrder(orderId);
         return "redirect:/admin";
+    }
+
+    @PostMapping("/buy")
+    public String buyProduct(@RequestParam int productID,
+                             @RequestParam int quantity,
+                             Model model,
+                             Authentication authentication) {
+        try {
+            Optional<Product> productOpt = productRepository.findById(productID);
+            if (productOpt.isEmpty()) {
+                return "redirect:/product/getAll?error=Product not found";
+
+            }
+            String username = authentication.getName(); //Logged-in username från Spring Security
+            orderService.createOrder(username, productOpt.get(), quantity);
+            return "order-successful";
+
+        } catch (Exception e) {
+            return "redirect:/product/getAll?error=Failed to create order";
+        }
+    }
+
+    @GetMapping("/order-successful")
+    public String orderSuccessful (Model model){
+        model.addAttribute("title", "Order Successful");
+        return "order-successful";
+
+
     }
 
 }
