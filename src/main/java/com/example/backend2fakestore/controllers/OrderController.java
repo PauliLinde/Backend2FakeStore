@@ -2,6 +2,8 @@ package com.example.backend2fakestore.controllers;
 
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
+import com.example.backend2fakestore.repository.ProductRepository;
+import com.example.backend2fakestore.repository.UserRepository;
 import com.example.backend2fakestore.services.OrderService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,16 @@ import java.util.Optional;
 @Controller
 public class OrderController {
 
+    private final OrderService orderService;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    OrderService orderService;
-
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, ProductRepository productRepository, UserRepository userRepository) {
         this.orderService = orderService;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
+
 
     @GetMapping("/admin")
     public String getAllOrders(Model model){
