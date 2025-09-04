@@ -14,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AppUser {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

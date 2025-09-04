@@ -8,7 +8,8 @@ import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,7 +44,7 @@ ProductOrder order = new ProductOrder();
         order.setAppUser(user);
         order.setProduct(product);
         order.setQuantity(quantity);
-        order.setDate(LocalDateTime.now());
+        order.setDate(LocalDate.now());
         order.setTotal(quantity);
 
 
@@ -55,6 +56,33 @@ ProductOrder order = new ProductOrder();
         return savedOrder;
     }
 
+
+    public void createOrder2(int userId, int productId) {
+
+        try {
+            AppUser user = userRepository.findById(userId).get();
+            if (user == null) {
+                System.out.println("User not found");
+            }
+            Product product = productRepository.findById(productId).get();
+            if (product == null) {
+                System.out.println("Product not found");
+            }
+
+            ProductOrder order = new ProductOrder();
+            order.setAppUser(user);
+            order.setProduct(product);
+            order.setQuantity(1);
+            order.setDate(LocalDate.now());
+
+            int total = (int) product.getPrice();
+            order.setTotal(total);
+
+            orderRepository.save(order);
+        } catch (Exception e) {
+            System.out.println("Error creating order " + e.getMessage());
+        }
+    }
 
     //Ta bort order
     public void deleteOrder(int orderId) {
