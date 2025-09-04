@@ -8,7 +8,7 @@ import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,7 +43,7 @@ ProductOrder order = new ProductOrder();
         order.setAppUser(user);
         order.setProduct(product);
         order.setQuantity(quantity);
-        order.setDate(LocalDateTime.now());
+        order.setDate(LocalDate.now());
         order.setTotal(quantity);
 
 
