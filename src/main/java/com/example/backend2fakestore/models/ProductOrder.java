@@ -3,6 +3,7 @@ package com.example.backend2fakestore.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +15,7 @@ public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
-    public LocalDateTime date;
+    public LocalDate date;
     public int total;
     public int quantity;
 
