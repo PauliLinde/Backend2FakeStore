@@ -1,14 +1,13 @@
 package com.example.backend2fakestore.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class ProductOrder {
 
@@ -17,13 +16,14 @@ public class ProductOrder {
     public int id;
     public LocalDateTime date;
     public int total;
+    public int quantity;
 
-    @OneToOne
+    @ManyToOne /*The @OneToOne annotation creates a unique constraint, meaning each product can only appear in one order ever. This is why you get "Duplicate entry '1'" - you're trying to create a second order for product with ID 1.*/
     @JoinColumn(name = "product_id")
     public Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     public AppUser appUser;
-
 }
+
