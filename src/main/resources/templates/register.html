@@ -45,18 +45,17 @@
 <form th:action="@{/register}" th:object="${registerUserDTO}" method="post">
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-    <label> Username:<br>
-        <input type="text" th:field="*{username}" required><br><br>
-    </label>
-    <label> Password:<br>
-        <input type="password" th:field="*{password}" required><br><br>
-    </label>
-    <label> Role:
-        <select th:field="*{role}">
-            <option value="USER">User</option>
-            <option value="ADMIN">Admin</option>
-        </select>
-    </label><br>
+    <label> Username:</label><br>
+    <input type="text" th:field="*{username}" required><br><br>
+
+    <label> Password:</label><br>
+    <input type="password" th:field="*{password}" required><br><br>
+
+    <label> Role:</label><br>
+    <select th:field="*{role}">
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+    </select><br><br>
 
   <button type="submit">Register</button>
 </form>
