@@ -56,33 +56,6 @@ ProductOrder order = new ProductOrder();
     }
 
 
-    public void createOrder2(int userId, int productId) {
-
-        try {
-            AppUser user = userRepository.findById(userId).get();
-            if (user == null) {
-                System.out.println("User not found");
-            }
-            Product product = productRepository.findById(productId).get();
-            if (product == null) {
-                System.out.println("Product not found");
-            }
-
-            ProductOrder order = new ProductOrder();
-            order.setAppUser(user);
-            order.setProduct(product);
-            order.setQuantity(1);
-            order.setDate(LocalDateTime.now());
-
-            int total = (int) product.getPrice();
-            order.setTotal(total);
-
-            orderRepository.save(order);
-        } catch (Exception e) {
-            System.out.println("Error creating order " + e.getMessage());
-        }
-    }
-
     //Ta bort order
     public void deleteOrder(int orderId) {
         if (!orderRepository.existsById(orderId)) {

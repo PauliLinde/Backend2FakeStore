@@ -18,12 +18,10 @@ public class OrderController {
 
     private final OrderService orderService;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
     public OrderController(OrderService orderService, ProductRepository productRepository, UserRepository userRepository) {
         this.orderService = orderService;
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
     }
 
 
@@ -40,14 +38,6 @@ public class OrderController {
         model.addAttribute("allOrders", orders);
         model.addAttribute("title", "All orders");
         return "admin.html";
-    }
-
-    @GetMapping("/addOrder/{userId}/{productID}")
-    public String addNewOrder(@PathVariable int userId,
-            @PathVariable int productID, Model model){
-
-        orderService.createOrder2(userId, productID);
-        return "redirect:/";
     }
 
     @GetMapping("/admin/delete/{orderId}")
