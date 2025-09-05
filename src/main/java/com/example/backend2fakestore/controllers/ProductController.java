@@ -2,6 +2,7 @@ package com.example.backend2fakestore.controllers;
 
 import com.example.backend2fakestore.dtos.ProductDTO;
 import com.example.backend2fakestore.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,26 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
 
-    ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService;
 
     @RequestMapping("/product/getAll")
     public String getAllProducts(Model model){
         List<ProductDTO> products = productService.getAllProducts();
-
-        System.out.println("Number of products found: " + products.size());
-        if (!products.isEmpty()) {
-            System.out.println("First product: " + products.get(0).getTitle());
-        }
-
         model.addAttribute("allProducts", products);
-        model.addAttribute("title", "Products");
-        model.addAttribute("name", "Product details");
         return "products";
     }
 
