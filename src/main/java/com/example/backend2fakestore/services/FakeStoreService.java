@@ -2,6 +2,7 @@ package com.example.backend2fakestore.services;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,10 @@ import java.net.URL;
 
 @Service
 @Component
+@RequiredArgsConstructor
 public class FakeStoreService {
 
 	ProductRepository pRepository;
-
-	public FakeStoreService(ProductRepository pRepository) {
-		this.pRepository = pRepository;
-	}
 
 	public void getItemsAndSave() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
@@ -37,14 +35,10 @@ public class FakeStoreService {
 				SBuilder.append(line);
 			}
 
-			System.out.println("JSON Response: " + SBuilder);
-
 			Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
-			System.out.println("Parsed " + fakeProducts.length + " products");
 
 			for (Product root : fakeProducts) {
 				pRepository.save(root);
-				System.out.println("Saved product: " + root.getTitle());
 			}
 		}
 	}

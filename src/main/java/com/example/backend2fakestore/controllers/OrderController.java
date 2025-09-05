@@ -5,6 +5,7 @@ import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.repository.UserRepository;
 import com.example.backend2fakestore.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,26 +15,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
     private final ProductRepository productRepository;
 
-    public OrderController(OrderService orderService, ProductRepository productRepository, UserRepository userRepository) {
-        this.orderService = orderService;
-        this.productRepository = productRepository;
-    }
-
 
     @GetMapping("/admin")
     public String getAllOrders(Model model){
         List<ProductOrder> orders = orderService.getAllOrders();
-
-        if(orders == null){
-            System.out.println("No orders found");
-        }
-
-        System.out.println("Antal orders: " + orders.size()); // Debug
 
         model.addAttribute("allOrders", orders);
         model.addAttribute("title", "All orders");
@@ -70,8 +61,5 @@ public class OrderController {
     public String orderSuccessful (Model model){
         model.addAttribute("title", "Order Successful");
         return "order-successful";
-
-
     }
-
 }
