@@ -4,7 +4,6 @@ import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.OrderRepository;
-import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,12 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
     public List<ProductOrder> getAllOrders() {
         return orderRepository.findAll();
     }
-
+    //skapa order
     public ProductOrder createOrder(String username, Product product, int quantity) {
 
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
@@ -38,10 +36,10 @@ public class OrderService {
         int total = (int) product.getPrice() * quantity;
         order.setTotal(total);
 
+    //spara order
         ProductOrder savedOrder = orderRepository.save(order);
         return savedOrder;
     }
-
 
     //Ta bort order
     public void deleteOrder(int orderId) {
