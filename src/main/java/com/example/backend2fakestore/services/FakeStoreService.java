@@ -18,7 +18,7 @@ import java.net.URL;
 @RequiredArgsConstructor
 public class FakeStoreService {
 
-	ProductRepository pRepository;
+	private final ProductRepository pRepository;
 
 	public void getItemsAndSave() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
