@@ -22,7 +22,7 @@ public class OrderService {
         return orderRepository.findAll();
     }
     //skapa order
-    public ProductOrder createOrder(String username, Product product, int quantity) {
+    public void createOrder(String username, Product product, int quantity) {
 
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -37,8 +37,8 @@ public class OrderService {
         order.setTotal(total);
 
     //spara order
-        ProductOrder savedOrder = orderRepository.save(order);
-        return savedOrder;
+        orderRepository.save(order);
+
     }
 
     //Ta bort order

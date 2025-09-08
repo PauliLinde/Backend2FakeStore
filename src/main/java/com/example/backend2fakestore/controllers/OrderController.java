@@ -3,7 +3,6 @@ package com.example.backend2fakestore.controllers;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.ProductRepository;
-import com.example.backend2fakestore.repository.UserRepository;
 import com.example.backend2fakestore.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -28,7 +27,7 @@ public class OrderController {
 
         model.addAttribute("allOrders", orders);
         model.addAttribute("title", "All orders");
-        return "admin.html";
+        return "admin";
     }
 
     @GetMapping("/admin/delete/{orderId}")
@@ -40,7 +39,6 @@ public class OrderController {
     @PostMapping("/buy")
     public String buyProduct(@RequestParam int productID,
                              @RequestParam int quantity,
-                             Model model,
                              Authentication authentication) {
         try {
             Optional<Product> productOpt = productRepository.findById(productID);
