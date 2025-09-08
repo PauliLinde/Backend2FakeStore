@@ -1,9 +1,12 @@
 package com.example.backend2fakestore.services;
 
+import com.example.backend2fakestore.dtos.AdminOrderListDTO;
+import com.example.backend2fakestore.mappers.OrderMapper;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.OrderRepository;
+import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,28 +20,30 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final OrderMapper orderMapper;
+    private final ProductRepository productRepository;
 
-    public List<ProductOrder> getAllOrders() {
-        return orderRepository.findAll();
+    public List<AdminOrderListDTO> getAllOrders() {
+        return orderMapper.productOrderListToAdminOrderDTOList(orderRepository.findAll());
     }
-    //skapa order
-    public void createOrder(String username, Product product, int quantity) {
 
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    //skapa order
+    public void createOrder(String username, int productID) {
+        AppUser user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Product product = productRepository
+                .findById(productID)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         ProductOrder order = new ProductOrder();
-                order.setAppUser(user);
-                order.setProduct(product);
-                order.setQuantity(quantity);
-                order.setDate(LocalDate.now());
-                order.setTotal(quantity);
+        order.setDate(LocalDate.now());
+        order.setProduct(product);
+        order.setAppUser(user);
 
-        int total = (int) product.getPrice() * quantity;
-        order.setTotal(total);
-
-    //spara order
+        //spara order
         orderRepository.save(order);
-
     }
 
     //Ta bort order

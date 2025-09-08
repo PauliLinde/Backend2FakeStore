@@ -1,6 +1,6 @@
 package com.example.backend2fakestore.mappers;
 
-import com.example.backend2fakestore.dtos.ProductDTO;
+import com.example.backend2fakestore.dtos.DisplayProductDTO;
 import com.example.backend2fakestore.models.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,41 +12,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductMapper {
 
-    public ProductDTO toDto(Product product) {
+    public DisplayProductDTO productToDisplayProductDTO(Product product) {
         if (product == null) return null;
-        ProductDTO productDto = new ProductDTO();
-        productDto.setId(product.getId());
-        productDto.setTitle(product.getTitle());
-        productDto.setPrice(product.getPrice());
-        productDto.setDescription(product.getDescription());
-        productDto.setCategory(product.getCategory());
-        productDto.setImage(product.getImage());
-        return productDto;
+        DisplayProductDTO displayProductDTO = new DisplayProductDTO();
+        displayProductDTO.setId(product.getId());
+        displayProductDTO.setTitle(product.getTitle());
+        displayProductDTO.setPrice(product.getPrice());
+        displayProductDTO.setDescription(product.getDescription());
+        displayProductDTO.setCategory(product.getCategory());
+        displayProductDTO.setImage(product.getImage());
+        return displayProductDTO;
     }
 
-    public Product toEntity(ProductDTO productDto) {
-        if (productDto == null) return null;
-        Product product = new Product();
-        product.setId(productDto.getId());
-        product.setTitle(productDto.getTitle());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        product.setCategory(productDto.getCategory());
-        product.setImage(productDto.getImage());
-        return product;
-    }
-
-    public List<ProductDTO> toDtoList(List<Product> products){
-        if (products == null) return null;
+    public List<DisplayProductDTO> productListToDisplayProductDTOList(List<Product> products) {
         return products.stream()
-                .map(this::toDto)
+                .map(this::productToDisplayProductDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<Product> toEntityList(List<ProductDTO> productDTOS){
-        if (productDTOS == null) return null;
-        return productDTOS.stream()
-                .map(this::toEntity)
-                .collect(Collectors.toList());
-    }
 }

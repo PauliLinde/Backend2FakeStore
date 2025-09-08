@@ -13,9 +13,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FakeStoreController {
 
-    ProductRepository productRepository;
-    FakeStoreService fakeStoreService;
-
+    private final ProductRepository productRepository;
+    private final FakeStoreService fakeStoreService;
 
     @GetMapping("/fetch")
     public ResponseEntity<?> fetchProducts() throws IOException {
