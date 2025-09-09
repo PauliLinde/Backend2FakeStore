@@ -1,6 +1,5 @@
 package com.example.backend2fakestore.controllers;
 
-import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.services.FakeStoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +12,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FakeStoreController {
 
-    private final ProductRepository productRepository;
     private final FakeStoreService fakeStoreService;
 
     @GetMapping("/fetch")
     public ResponseEntity<?> fetchProducts() throws IOException {
         fakeStoreService.getItemsAndSave();
-        return ResponseEntity.ok().body(productRepository.findAll());
+        return ResponseEntity.ok().body(fakeStoreService.getAllProducts());
     }
 }

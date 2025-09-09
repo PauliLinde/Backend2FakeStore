@@ -3,7 +3,6 @@ import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
@@ -15,7 +14,6 @@ import java.net.URL;
 import java.util.Arrays;
 
 @Service
-@Component
 @RequiredArgsConstructor
 public class FakeStoreService {
 
@@ -41,6 +39,10 @@ public class FakeStoreService {
             productRepository.saveAll(Arrays.asList(fakeProducts));
 		}
 	}
+
+    public Iterable<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
 }
 
 

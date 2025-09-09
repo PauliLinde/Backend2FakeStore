@@ -24,7 +24,8 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     public List<AdminOrderListDTO> getAllOrders() {
-        return orderMapper.productOrderListToAdminOrderDTOList(orderRepository.findAll());
+        return orderMapper.productOrderListToAdminOrderDTOList
+                (orderRepository.findAll());
     }
 
     //skapa order

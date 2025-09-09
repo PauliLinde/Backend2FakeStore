@@ -16,6 +16,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public List<DisplayProductDTO> getAllProducts(){
-        return productMapper.productListToDisplayProductDTOList(productRepository.findAll().stream().toList());
+        return productMapper.productListToDisplayProductDTOList
+                (productRepository.findAll().stream().toList());
     }
 }
