@@ -28,7 +28,7 @@ public class OrderService {
                 (orderRepository.findAll());
     }
 
-    //skapa order
+
     public void createOrder(String username, int productID) {
         AppUser user = userRepository
                 .findByUsername(username)
@@ -43,11 +43,11 @@ public class OrderService {
         order.setProduct(product);
         order.setAppUser(user);
 
-        //spara order
+
         orderRepository.save(order);
     }
 
-    //Ta bort order
+
     public void deleteOrder(int orderId) {
         if (!orderRepository.existsById(orderId)) {
             throw new RuntimeException("Order ID not found");

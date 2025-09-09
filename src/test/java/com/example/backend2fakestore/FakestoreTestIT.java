@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FakestoreTestIT {
 
-
-
     @Test
     void shouldReturnAttribute (){
     String url = "https://fakestoreapi.com/products";
