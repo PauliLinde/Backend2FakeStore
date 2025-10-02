@@ -1,6 +1,7 @@
 package com.example.backend2fakestore.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Product {
 
@@ -27,6 +29,7 @@ public class Product {
     @Embeddable
     @Getter
     @Setter
+    @AllArgsConstructor
     @NoArgsConstructor
     public static class Rating {
         private double rate;

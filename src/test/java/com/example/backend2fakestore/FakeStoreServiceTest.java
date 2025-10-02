@@ -3,8 +3,10 @@ package com.example.backend2fakestore;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.services.FakeStoreService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -12,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
 
 import static org.mockito.Mockito.*;
 
@@ -24,6 +25,13 @@ class FakeStoreServiceTest {
 
 	@InjectMocks
 	private FakeStoreService fStoreService;
+
+@Test
+void testGetItemsANdSaveSaveAll() throws IOException {
+	fStoreService.getItemsAndSave();
+	verify(pRepository, times(1)).saveAll(any());
+	verify(pRepository, atLeastOnce()).saveAll(anyList());
+}
 
 
 	@Test
@@ -41,4 +49,8 @@ class FakeStoreServiceTest {
 
 		verify(pRepository, atLeastOnce()).saveAll(anyList());
 	}
+
+
+
+
 }
