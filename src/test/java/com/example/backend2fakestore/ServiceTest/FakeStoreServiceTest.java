@@ -3,39 +3,57 @@ package com.example.backend2fakestore.ServiceTest;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.services.FakeStoreService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) //JUnit använder Mockito
+@ExtendWith(MockitoExtension.class)
 class FakeStoreServiceTest {
 
 	@Mock
-	private ProductRepository pRepository; //skapar upp en lokal pRepository, falsk version
+	private ProductRepository pRepository;
 
 	@InjectMocks
-	private FakeStoreService fStoreService; //skapar en lokal fStoreService och injicerar pRepository automatiskt
+	private FakeStoreService fStoreService;
 
-	@Test //testet anropar API:et
+@Test
+void testGetItemsANdSaveSaveAll() throws IOException {
+	fStoreService.getItemsAndSave();
+	verify(pRepository, times(1)).saveAll(any());
+	verify(pRepository, atLeastOnce()).saveAll(anyList());
+}
+
+
+	@Test
 	void testGetItemsAndSave() throws IOException {
-//kopplar till Root, gör en mockprodukt.
+		//kopplar till Product, gör en mockprodukt.
 		Product mProduct = new Product();
 		mProduct.setId(1);
 		mProduct.setTitle("Test Product");
-//när någon anropar save() med vilken Root som helst, returnera mockProduct
-		when(pRepository.save(any(Product.class))).thenReturn(mProduct);
 
-//utför koden som ska testas
+		List<Product> mockList = Collections.singletonList(mProduct);
+
+		when(pRepository.saveAll(anyList())).thenReturn(mockList);
+
 		fStoreService.getItemsAndSave();
-//testar att save() anropades
-		verify(pRepository, atLeastOnce()).save(any(Product.class));
+
+		verify(pRepository, atLeastOnce()).saveAll(anyList());
 	}
+
+
+
+
 }

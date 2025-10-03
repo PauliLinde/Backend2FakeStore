@@ -3,7 +3,6 @@ import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
@@ -12,13 +11,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 @Service
-@Component
 @RequiredArgsConstructor
 public class FakeStoreService {
 
-	ProductRepository pRepository;
+	private final ProductRepository productRepository;
 
 	public void getItemsAndSave() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
@@ -37,11 +36,13 @@ public class FakeStoreService {
 
 			Product[] fakeProducts = mapper.readValue(SBuilder.toString(), Product[].class);
 
-			for (Product root : fakeProducts) {
-				pRepository.save(root);
-			}
+            productRepository.saveAll(Arrays.asList(fakeProducts));
 		}
 	}
+
+    public Iterable<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
 }
 
 

@@ -6,20 +6,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 
 class Backend2FakeStoreApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 
+    //testar mappern med en lokal JSON-sträng
     @Test
-    void testJSONMapper() throws Exception { //testar mappern med en lokal JSON-sträng
+    void testJSONMapper() throws Exception {
         String JSON = "[{\"id\":1,\"title\":\"Test Product\",\"price\":10.99,\"description\":\"Test desc\",\"category\":\"electronics\",\"image\":\"url\",\"rating\":{\"rate\":4.5,\"count\":120}}]";
-   ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         Product[] roots = mapper.readValue(JSON, Product[].class);
 
         assertEquals(1, roots.length);

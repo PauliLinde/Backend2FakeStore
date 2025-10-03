@@ -3,7 +3,7 @@ package com.example.backend2fakestore.dtos;
 import lombok.Data;
 
 @Data
-public class ProductDTO {
+public class DisplayProductDTO {
 
     private int id;
     private String title;

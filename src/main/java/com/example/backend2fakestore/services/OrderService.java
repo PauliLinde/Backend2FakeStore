@@ -1,5 +1,7 @@
 package com.example.backend2fakestore.services;
 
+import com.example.backend2fakestore.dtos.AdminOrderListDTO;
+import com.example.backend2fakestore.mappers.OrderMapper;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
@@ -17,33 +19,35 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final OrderMapper orderMapper;
+    private final ProductRepository productRepository;
 
-    public List<ProductOrder> getAllOrders() {
-        return orderRepository.findAll();
+    public List<AdminOrderListDTO> getAllOrders() {
+        return orderMapper.productOrderListToAdminOrderDTOList
+                (orderRepository.findAll());
     }
 
-    public ProductOrder createOrder(String username, Product product, int quantity) {
 
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    public void createOrder(String username, int productID) {
+        AppUser user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Product product = productRepository
+                .findById(productID)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         ProductOrder order = new ProductOrder();
-                order.setAppUser(user);
-                order.setProduct(product);
-                order.setQuantity(quantity);
-                order.setDate(LocalDate.now());
-                order.setTotal(quantity);
+        order.setDate(LocalDate.now());
+        order.setProduct(product);
+        order.setAppUser(user);
 
-        int total = (int) product.getPrice() * quantity;
-        order.setTotal(total);
 
-        ProductOrder savedOrder = orderRepository.save(order);
-        return savedOrder;
+        orderRepository.save(order);
     }
 
 
-    //Ta bort order
     public void deleteOrder(int orderId) {
         if (!orderRepository.existsById(orderId)) {
             throw new RuntimeException("Order ID not found");

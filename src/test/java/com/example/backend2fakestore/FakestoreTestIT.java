@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FakestoreTestIT {
 
-
-
     @Test
     void shouldReturnAttribute (){
     String url = "https://fakestoreapi.com/products";
@@ -22,17 +20,20 @@ public class FakestoreTestIT {
     String json = rt.getForObject(url, String.class);
 
     assertNotNull(json);
-
-    assertTrue(json.contains("id"));
-    assertTrue(json.contains("price"));
-    assertTrue(json.contains("title"));
-    assertTrue(json.contains("category"));
-    assertTrue(json.contains("description"));
-    assertTrue(json.contains("image"));
-    assertTrue(json.contains("count"));
-    assertTrue(json.contains("rating"));
-    assertTrue(json.contains("rate"));
-
+    assertTrue(json.startsWith("["));
+    assertTrue(json.contains("\"id\""));
+    assertTrue(json.contains("\"title\""));
+    assertTrue(json.contains("\"price\""));
+    assertTrue(json.contains("\"description\""));
+    assertTrue(json.contains("\"category\""));
+    assertTrue(json.contains("\"image\""));
+    assertTrue(json.contains("\"rating\""));
+    assertTrue(json.contains("\"rate\""));
+    assertTrue(json.contains("\"count\""));
+    assertTrue(json.contains("men's clothing"));
+    assertTrue(json.contains("women's clothing"));
+    assertTrue(json.contains("jewelery"));
+    assertTrue(json.contains("electronics"));
     }
 
 }
