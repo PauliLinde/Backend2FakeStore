@@ -49,9 +49,14 @@ public class ProductServiceTest {
 		entityManager.flush();
 	}
 
+	@Test
+	void getAllProductsTest(){
+		productRepository.findAll();
+
+		assertTrue(productRepository.findAll().size() > 0);
+	}
 
 	@Test
-
 	void testFindProductAndSave() {
 		Optional<Product> findProductById = productRepository.findById(2);
 
