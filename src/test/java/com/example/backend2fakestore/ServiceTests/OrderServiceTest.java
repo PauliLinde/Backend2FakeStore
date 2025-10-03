@@ -41,7 +41,6 @@ public class OrderServiceTest {
 
     @Test
     void getAllOrdersTest(){
-        // Mocka användaren
         AppUser mockUser = new AppUser();
         mockUser.setUsername(testUsername);
         when(userRepository.findByUsername(testUsername)).thenReturn(Optional.of(mockUser));
