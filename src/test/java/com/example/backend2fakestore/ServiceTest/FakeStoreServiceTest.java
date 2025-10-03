@@ -1,4 +1,4 @@
-package com.example.backend2fakestore;
+package com.example.backend2fakestore.ServiceTest;
 
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
