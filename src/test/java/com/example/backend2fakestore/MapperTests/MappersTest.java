@@ -1,4 +1,4 @@
-package com.example.backend2fakestore;
+package com.example.backend2fakestore.MapperTests;
 
 import com.example.backend2fakestore.dtos.AdminOrderListDTO;
 import com.example.backend2fakestore.dtos.DisplayProductDTO;

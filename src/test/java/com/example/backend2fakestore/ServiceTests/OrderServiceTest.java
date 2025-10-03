@@ -1,10 +1,11 @@
-package com.example.backend2fakestore.ServiceTest;
+package com.example.backend2fakestore.ServiceTests;
 
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.OrderRepository;
 import com.example.backend2fakestore.repository.UserRepository;
+import com.example.backend2fakestore.repository.ProductRepository;
 import com.example.backend2fakestore.services.OrderService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +25,13 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
     @Mock
     private UserRepository userRepository;
+
     @Mock
-    private Product testProduct;
+    private ProductRepository productRepository;
+
     @InjectMocks
     private OrderService orderService;
 
@@ -37,15 +41,19 @@ public class OrderServiceTest {
 
     @Test
     void getAllOrdersTest(){
+        // Mocka användaren
         AppUser mockUser = new AppUser();
         mockUser.setUsername(testUsername);
         when(userRepository.findByUsername(testUsername)).thenReturn(Optional.of(mockUser));
+
+        Product mockProduct = new Product();
+        when(productRepository.findById(anyInt())).thenReturn(Optional.of(mockProduct));
 
         List<ProductOrder> mockOrders = new ArrayList<>();
         mockOrders.add(new ProductOrder());
         when(orderRepository.findAll()).thenReturn(mockOrders);
 
-        orderService.createOrder(testUsername, testProduct, testQuantity);
+        orderService.createOrder(testUsername, testQuantity);
         List<ProductOrder> allOrders = orderRepository.findAll();
 
         assertTrue(allOrders.size() > 0);
@@ -58,12 +66,12 @@ public class OrderServiceTest {
         mockUser.setUsername(testUsername);
         when(userRepository.findByUsername(testUsername)).thenReturn(Optional.of(mockUser));
 
-        ProductOrder mockOrder = new ProductOrder();
-        when(orderRepository.save(any())).thenReturn(mockOrder);
+        Product mockProduct = new Product();
+        when(productRepository.findById(anyInt())).thenReturn(Optional.of(mockProduct));
 
-        ProductOrder result = orderService.createOrder(testUsername, testProduct, testQuantity);
+        orderService.createOrder(testUsername, testQuantity);
 
-        assertNotNull(result);
+        verify(orderRepository, times(1)).save(any(ProductOrder.class));
     }
 
     @Test
@@ -75,5 +83,4 @@ public class OrderServiceTest {
 
         verify(orderRepository, times(1)).deleteById(orderId);
     }
-
 }

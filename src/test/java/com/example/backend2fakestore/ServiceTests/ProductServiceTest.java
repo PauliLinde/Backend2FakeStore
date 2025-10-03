@@ -1,4 +1,4 @@
-package com.example.backend2fakestore;
+package com.example.backend2fakestore.ServiceTests;
 
 import com.example.backend2fakestore.mappers.ProductMapper;
 import com.example.backend2fakestore.models.Product;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
