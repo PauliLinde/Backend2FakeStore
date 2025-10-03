@@ -1,5 +1,6 @@
 package com.example.backend2fakestore.ServiceTests;
 
+import com.example.backend2fakestore.dtos.DisplayProductDTO;
 import com.example.backend2fakestore.mappers.ProductMapper;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.repository.ProductRepository;
@@ -51,9 +52,9 @@ public class ProductServiceTest {
 
 	@Test
 	void getAllProductsTest(){
-		productRepository.findAll();
+		List<DisplayProductDTO> allProducts = productService.getAllProducts();
 
-		assertTrue(productRepository.findAll().size() > 0);
+		assertTrue(allProducts.size() > 0);
 	}
 
 	@Test
