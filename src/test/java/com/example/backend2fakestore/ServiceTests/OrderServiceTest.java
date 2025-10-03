@@ -1,85 +1,102 @@
 package com.example.backend2fakestore.ServiceTests;
 
+import com.example.backend2fakestore.dtos.AdminOrderListDTO;
+import com.example.backend2fakestore.mappers.OrderMapper;
 import com.example.backend2fakestore.models.AppUser;
 import com.example.backend2fakestore.models.Product;
 import com.example.backend2fakestore.models.ProductOrder;
 import com.example.backend2fakestore.repository.OrderRepository;
+import com.example.backend2fakestore.services.OrderService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import com.example.backend2fakestore.repository.UserRepository;
 import com.example.backend2fakestore.repository.ProductRepository;
-import com.example.backend2fakestore.services.OrderService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest
+@Import({OrderService.class, OrderMapper.class})
 public class OrderServiceTest {
 
-    @Mock
-    private OrderRepository orderRepository;
+    @Autowired
+    private TestEntityManager entityManager;
 
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private ProductRepository productRepository;
-
-    @InjectMocks
+    @Autowired
     private OrderService orderService;
 
-    private final String testUsername = "test";
-    private final int testQuantity = 5;
+    @Autowired
+    private OrderRepository orderRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    private Product testProduct;
+
+    private ProductOrder testOrder;
+
+    private AppUser testUser;
+
+    @BeforeEach
+    void setUp(){
+        testUser = new AppUser();
+        testUser.setUsername("test");
+        testUser.setPassword("password");
+        testUser.setRole("admin");
+        entityManager.persist(testUser);
+
+        Product.Rating rating = new Product.Rating(4.5, 100);
+        testProduct = new Product();
+        testProduct.setTitle("Test Backpack");
+        testProduct.setPrice(599.00);
+        testProduct.setDescription("A backpack to put all your tests into");
+        testProduct.setCategory("Items");
+        testProduct.setImage("https://fakestoreapi/backpack.jpg");
+        testProduct.setRating(rating);
+        entityManager.persist(testProduct);
+
+        testOrder = new ProductOrder();
+        testOrder.setDate(LocalDate.parse("2025-11-25"));
+        testOrder.setProduct(testProduct);
+        testOrder.setAppUser(testUser);
+
+        entityManager.persist(testOrder);
+        entityManager.flush();
+    }
 
     @Test
     void getAllOrdersTest(){
-        AppUser mockUser = new AppUser();
-        mockUser.setUsername(testUsername);
-        when(userRepository.findByUsername(testUsername)).thenReturn(Optional.of(mockUser));
-
-        Product mockProduct = new Product();
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(mockProduct));
-
-        List<ProductOrder> mockOrders = new ArrayList<>();
-        mockOrders.add(new ProductOrder());
-        when(orderRepository.findAll()).thenReturn(mockOrders);
-
-        orderService.createOrder(testUsername, testQuantity);
-        List<ProductOrder> allOrders = orderRepository.findAll();
+        List<AdminOrderListDTO> allOrders = orderService.getAllOrders();
 
         assertTrue(allOrders.size() > 0);
-        assertFalse(allOrders.isEmpty());
     }
 
     @Test
     void createOrderTest(){
-        AppUser mockUser = new AppUser();
-        mockUser.setUsername(testUsername);
-        when(userRepository.findByUsername(testUsername)).thenReturn(Optional.of(mockUser));
+        String testUsername = "test";
 
-        Product mockProduct = new Product();
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(mockProduct));
+        orderService.createOrder(testUsername, testProduct.getId());
+        List<AdminOrderListDTO> allOrders = orderService.getAllOrders();
+        String found = allOrders.stream().filter(s -> s.getUsername().equals("test")).findFirst().get().getUsername();
+        assertTrue(allOrders.size() > 0);
+        assertEquals(testUsername, found);
 
-        orderService.createOrder(testUsername, testQuantity);
-
-        verify(orderRepository, times(1)).save(any(ProductOrder.class));
     }
 
     @Test
     void deleteOrderTest(){
-        int orderId = 1;
-        when(orderRepository.existsById(orderId)).thenReturn(true);
+        orderService.deleteOrder(testOrder.getId());
 
-        orderService.deleteOrder(orderId);
-
-        verify(orderRepository, times(1)).deleteById(orderId);
+        List<AdminOrderListDTO> allOrders = orderService.getAllOrders();
+        assertEquals(0, allOrders.size());
     }
 }
