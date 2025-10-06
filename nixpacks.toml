@@ -1,5 +1,0 @@
-[phases.build]
-cmds = ["mvn clean install -DskipTests -Pproduction"]
-
-[start]
-cmd = "java -jar target/*.jar"
