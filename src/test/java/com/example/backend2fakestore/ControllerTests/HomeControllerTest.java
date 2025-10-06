@@ -12,18 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+public class HomeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void testLogin() throws Exception {
-        this.mockMvc.perform(get("/login")).andDo(print()).andExpect(status().isOk());
-    }
-
-    @Test
-    void testRegister() throws Exception {
-        this.mockMvc.perform(get("/register")).andDo(print()).andExpect(status().isOk());
+    public void homeTest() throws Exception {
+        mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk());
     }
 }
