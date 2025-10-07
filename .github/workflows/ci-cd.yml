@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Java Maven CI/CD Pipeline
 
 on:
   push:
@@ -13,16 +13,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          node-version: '18'
+          distribution: 'temurin'
+          java-version: '17'  # eller '18' om du använder det
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build with Maven
+        run: mvn clean install
 
       - name: Run tests
-        run: npm test
+        run: mvn test
 
   deploy:
     needs: build-and-test
@@ -30,7 +31,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚀 Deploy to Railway
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to Railway
         uses: railwayapp/cli-action@v1
         with:
           railwayToken: ${{ secrets.RAILWAY_TOKEN }}
