@@ -34,10 +34,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install Railway CLI
-        run: |
-          curl -sSL https://railway.app/install.sh | sh
-          export PATH=$PATH:$HOME/.railway/bin
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Railway CLI via npm
+        run: npm install -g railway
 
       - name: Login to Railway
         env:
@@ -45,4 +48,4 @@ jobs:
         run: railway login --ci
 
       - name: Deploy to Railway
-        run: railway u
+        run: railway up
