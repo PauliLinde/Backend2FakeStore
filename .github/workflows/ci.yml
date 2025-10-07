@@ -3,7 +3,7 @@ name: Java Maven CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - master  # ändra om du använder 'main'
 
 jobs:
   build-and-test:
@@ -34,18 +34,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install Railway CLI via npm
-        run: npm install -g railway
-
-      - name: Login to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway login --ci
+      - name: Install Railway CLI
+        run: npm install @railway/cli
 
       - name: Deploy to Railway
-        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: npx railway up
