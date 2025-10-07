@@ -1,9 +1,9 @@
-name: Java Maven CI/CD Pipeline
+name: Java Maven CI Pipeline
 
 on:
   push:
     branches:
-      - master  # ändra om du använder 'main'
+      - master  # eller 'main' om ni använder det
 
 jobs:
   build-and-test:
@@ -24,25 +24,3 @@ jobs:
 
       - name: Run tests
         run: mvn test
-
-  deploy:
-    needs: build-and-test
-    if: success()
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Railway CLI
-        run: npm install @railway/cli
-
-      - name: Deploy to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: npx railway up
