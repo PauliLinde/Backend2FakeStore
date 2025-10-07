@@ -29,6 +29,7 @@ public class StoreControllerTest {
         controller = new StoreController(productService, orderService);
     }
 
+
     @Test
     void testGetAllProducts() {
         List<DisplayProductDTO> mockProducts = List.of(new DisplayProductDTO(1, "Product 1", "Desc", 10.0));
